@@ -6,21 +6,21 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        field = ('name')
+        fields = ('name',)
 
 
 class CondimentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Condiment
-        field = ('name')
+        fields = ('name',)
 
 
 class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        field = (
+        fields = (
             'name',
             'description',
             'type',
