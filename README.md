@@ -3,7 +3,7 @@ Recipe lookup API for given n ingredients. This project is written to try out an
 
 ## Getting Started
 All read operations are issued via get requests. Ingredients and seasonings are the parameters from which to filter the recipes.
-* ingredients - these are the main ingredients of the recipe requires.
+* ingredients - these are the main ingredients the recipe requires.
 * seasonings - spices, sauces, etc.
 * match_any_level - the level of matching to apply on the results.
 
