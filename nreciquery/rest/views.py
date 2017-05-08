@@ -6,6 +6,7 @@ from .serializers import IngredientSerializer, CondimentSerializer, RecipeSerial
 from itertools import chain
 # Create your views here.
 
+
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
@@ -40,6 +41,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return raw.split('|') if raw is not None else None
 
     def filter_ingredients(self, ingredients):
+        '''
+        Filters the recipe when lists ingredients are only given.
+        :param ingredients: list of ingredients
+        :return: recipes that uses the given ingredients
+        '''
         result_set = self.queryset.filter(ingredients__name__in=ingredients)\
                         .order_by('name')\
                         .distinct()
@@ -57,24 +63,24 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_looseness(self):
         return self.request.query_params.get(GetParams.MATCH_ANY_LEVEL, None)
 
-    def filter_both(self, ingredients, condiments):
+    def filter_both(self, ingredients, seasonings):
         ingredient_set = self.queryset.filter(ingredients__name__in=ingredients).distinct()
 
         if self.is_match_any_both():
-            seasoning_set = self.queryset.filter(condiments__name__in=condiments).distinct()
+            seasoning_set = self.queryset.filter(condiments__name__in=seasonings).distinct()
             return list(set(chain(ingredient_set, seasoning_set)))
 
         if self.is_match_any_ingredients():
-            return self.filter_exact_seasonings(condiments, ingredient_set)
+            return self.filter_exact_seasonings(seasonings, ingredient_set)
 
         results = self.queryset.filter(ingredients__name__in=ingredients)\
-                        .filter(condiments__name__in=condiments)\
+                        .filter(condiments__name__in=seasonings)\
                         .distinct()
 
-        return results if self.is_match_any_seasoning() else self.filter_exact_seasonings(condiments, results)
+        return results if self.is_match_any_seasoning() else self.filter_exact_seasonings(seasonings, results)
 
-    def filter_exact_seasonings(self, condiments, results):
-        return [result for result in results if condiments == [c.name for c in result.condiments.all()]]
+    def filter_exact_seasonings(self, seasonings, results):
+        return [result for result in results if seasonings == [c.name for c in result.condiments.all()]]
 
     def is_match_any_both(self):
         return self.get_looseness() == MatchLevel.BOTH
