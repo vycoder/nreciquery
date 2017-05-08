@@ -42,9 +42,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def filter_ingredients(self, ingredients):
         '''
-        Filters the recipe when lists ingredients are only given.
+        Filters the recipe on the exact given ingredients having any seasonings.
         :param ingredients: list of ingredients
-        :return: recipes that uses the given ingredients
+        :return: matching recipes
         '''
         result_set = self.queryset.filter(ingredients__name__in=ingredients)\
                         .order_by('name')\
