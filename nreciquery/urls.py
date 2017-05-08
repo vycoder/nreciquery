@@ -13,14 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import  routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from nreciquery.rest import views
 
+router = routers.DefaultRouter()
+router.register(r'ingredients', views.IngredientViewSet)
+router.register(r'condiments', views.CondimentViewSet)
+router.register(r'recipes', views.RecipeViewSet)
+
 urlpatterns = [
+    url(r'^',include(router.urls)),
     url(r'^admin/', admin.site.urls),
-    url(r'^ingredients/', views.IngredientList.as_view())
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)

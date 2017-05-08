@@ -29,3 +29,4 @@ class RecipeSerializer(serializers.ModelSerializer):
             'ingredients_details',
             'directions'
         )
+        depth = 2
