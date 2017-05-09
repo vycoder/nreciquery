@@ -7,7 +7,7 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
-class Condiment(models.Model):
+class Seasoning(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -32,7 +32,7 @@ class Recipe(models.Model):
     type = models.CharField(max_length=2, choices=TYPES, default=MAIN_DISH)
 
     ingredients = models.ManyToManyField(Ingredient)
-    condiments = models.ManyToManyField(Condiment)
+    seasonings = models.ManyToManyField(Seasoning)
     ingredients_details = models.TextField(default="")
     directions = models.TextField(default="")
 

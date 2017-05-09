@@ -1,8 +1,8 @@
 from django.db.models import Count
 from rest_framework import viewsets
 from .constants import GetParams, MatchLevel
-from .models import Ingredient, Condiment, Recipe
-from .serializers import IngredientSerializer, CondimentSerializer, RecipeSerializer
+from .models import Ingredient, Seasoning, Recipe
+from .serializers import IngredientSerializer, SeasoningSerializer, RecipeSerializer
 from itertools import chain
 # Create your views here.
 
@@ -16,8 +16,8 @@ class IngredientViewSet(viewsets.ModelViewSet):
         return self.queryset if name is None else self.queryset.filter(name=name)
 
 class CondimentViewSet(viewsets.ModelViewSet):
-    queryset = Condiment.objects.all()
-    serializer_class = CondimentSerializer
+    queryset = Seasoning.objects.all()
+    serializer_class = SeasoningSerializer
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -67,14 +67,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
         ingredient_set = self.queryset.filter(ingredients__name__in=ingredients).distinct()
 
         if self.is_match_any_both():
-            seasoning_set = self.queryset.filter(condiments__name__in=seasonings).distinct()
+            seasoning_set = self.queryset.filter(seasonings__name__in=seasonings).distinct()
             return list(set(chain(ingredient_set, seasoning_set)))
 
         if self.is_match_any_ingredients():
             return self.filter_exact_seasonings(seasonings, ingredient_set)
 
         results = self.queryset.filter(ingredients__name__in=ingredients)\
-                        .filter(condiments__name__in=seasonings)\
+                        .filter(seasonings__name__in=seasonings)\
                         .distinct()
 
         return results if self.is_match_any_seasoning() else self.filter_exact_seasonings(seasonings, results)
