@@ -7,6 +7,9 @@ All read operations are issued via get requests. Ingredients and seasonings are 
 * seasonings - spices, sauces, etc.
 * match_any_level - the level of matching to apply on the results.
 
+Currently, the API is live and hosted on pythonanywhere.com on this url: yev.pythonanywhere.com. Requests can all be done on the said server in real time. As of 5/10/2017 the database contains just test values. Issue a get request: ```yev.pythonanywhere.com/recipes/``` to see current available recipes from which you can play around with.
+
+
 ### Query recipes by ingredients
 Using only an ingredient parameter will perform exact matching on ingredients but any matching on seasoning. Lists should be delimited by the ```|``` character.
 ```
