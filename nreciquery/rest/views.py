@@ -26,15 +26,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         ingredients = self.get_request_list(GetParams.INGREDIENTS)
-        condiments = self.get_request_list(GetParams.SEASONING)
+        seasonings = self.get_request_list(GetParams.SEASONING)
 
         if ingredients is None:
             return self.queryset
 
-        if condiments is None:
+        if seasonings is None:
             return self.filter_ingredients(ingredients)
 
-        return self.filter_both(ingredients, condiments)
+        return self.filter_both(ingredients, seasonings)
 
     def get_request_list(self, param):
         raw = self.request.query_params.get(param, None)
@@ -80,7 +80,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return results if self.is_match_any_seasoning() else self.filter_exact_seasonings(seasonings, results)
 
     def filter_exact_seasonings(self, seasonings, results):
-        return [result for result in results if seasonings == [c.name for c in result.condiments.all()]]
+        return [result for result in results if seasonings == [s.name for s in result.seasonings.all()]]
 
     def is_match_any_both(self):
         return self.get_looseness() == MatchLevel.BOTH
