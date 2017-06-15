@@ -23,6 +23,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = (
             'name',
             'description',
+            'image',
             'type',
             'ingredients',
             'seasonings',

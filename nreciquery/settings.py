@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'nreciquery.rest.custompagination.NreciqueryPagination',
     'PAGE_SIZE': 10,
 }
 

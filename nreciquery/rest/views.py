@@ -47,15 +47,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         :return: matching recipes
         '''
         result_set = self.queryset.filter(ingredients__name__in=ingredients)\
-                        .order_by('name')\
-                        .distinct()
+                         .order_by('name')\
+                         .distinct()
 
         if self.is_match_any_ingredients():
             return result_set
 
-        return result_set.annotate(total=Count('ingredients'))\
-            .filter(total=len(ingredients))\
-            .distinct()
+        return self.filter_exact_ingredients(ingredients, result_set)
 
     def is_match_any_ingredients(self):
         return self.get_looseness() == MatchLevel.INGREDIENTS_ONLY
@@ -79,8 +77,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return results if self.is_match_any_seasoning() else self.filter_exact_seasonings(seasonings, results)
 
+    def filter_exact_ingredients(self, ingredients, results):
+        return [result for result in results if ingredients == [i.name for i in result.ingredients.all()] ]
+
     def filter_exact_seasonings(self, seasonings, results):
-        return [result for result in results if seasonings == [s.name for s in result.seasonings.all()]]
+        return [result for result in results if seasonings == [s.name for s in result.seasonings.all()] ]
 
     def is_match_any_both(self):
         return self.get_looseness() == MatchLevel.BOTH

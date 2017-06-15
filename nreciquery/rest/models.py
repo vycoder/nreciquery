@@ -35,6 +35,7 @@ class Recipe(models.Model):
     seasonings = models.ManyToManyField(Seasoning)
     ingredients_details = models.TextField(default="")
     directions = models.TextField(default="")
+    image = models.TextField(default="default.svg")
 
     def __str__(self):
         return self.name
