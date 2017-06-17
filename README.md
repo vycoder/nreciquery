@@ -47,3 +47,11 @@ Fetches only the recipes that contains both Pork and Beef having Mustard OR Ketc
 
 ### Querying without ingredients
 Ingredients are mandatory, if one fails to add an ```ingredients``` parameter, the whole recipe list will be fetched regardless if there's a ```seasoning``` or ```match_any_level``` parameters.
+
+## Authors
+
+* [**Joseph Harvey Angeles**](https://github.com/josephharveyangeles)
+    
+## License
+
+[![NCSA4](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
